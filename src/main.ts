@@ -11,6 +11,6 @@ async function bootstrap() {
   app.use('/downloads', express.static(path.join(__dirname, '..', 'downloads')));
   app.useGlobalPipes(new ValidationPipe()); // 這行非常重要
 
-  await app.listen(process.env.PORT ?? 3000);
+  await app.listen(process.env.PORT ?? 3000, '0.0.0.0');
 }
 bootstrap();
