@@ -21,7 +21,10 @@ export class SocketdlService {
             const ytDlp = spawn('yt-dlp', args);
         
             ytDlp.stdout.on('data', (data) => {
-                this.logGateway.sendLog(taskId, data.toString());
+                if(data.toString().indexOf('Destination') == -1){
+                    this.logGateway.sendLog(taskId, data.toString());
+                }
+                
             });
         
             ytDlp.stderr.on('data', (data) => {
