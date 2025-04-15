@@ -31,10 +31,10 @@ export class LogGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   //正規斷線
-  disconnect(taskId: string){
+  disconnect(taskId: string, url: string){
     const client = this.clients.get(taskId);
     if (client) {
-      client.emit('downloadComplete')  // 發送下載完成事件
+      client.emit('downloadComplete', url)  // 發送下載完成事件
     }
     
     this.clients.delete(taskId);
