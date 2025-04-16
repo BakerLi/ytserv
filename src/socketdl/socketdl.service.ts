@@ -13,7 +13,7 @@ export class SocketdlService {
 
     async runYtDlp(taskId:string, url: string, format: string = 'mp4'){
             const strFormat = format === 'mp3' ? `--extract-audio --audio-format` : `--merge-output-format`;
-            const fileName = `%(uploader)s_%(upload_date)s_%(id)s.%(ext)s`;
+            const fileName = `%(id)s.%(ext)s`;
             const outputPath = path.join(__dirname, '..', '..', 'downloads', fileName);
             console.log(`fileName:${fileName}  outputPath:${outputPath}`);
             const args = ['--output', outputPath, strFormat, format, '--embed-thumbnail', url];
@@ -21,8 +21,11 @@ export class SocketdlService {
             const ytDlp = spawn('yt-dlp', args);
         
             ytDlp.stdout.on('data', (data) => {
-                if(data.toString().indexOf('Destination') == -1){
+                if(data.toString().indexOf(`ytserv/downloads`) == -1){
                     this.logGateway.sendLog(taskId, data.toString());
+                }
+                else{
+                    
                 }
             });
         
@@ -39,7 +42,6 @@ export class SocketdlService {
                 this.logGateway.sendLog(taskId, `Spawn error: ${err.message}`);
                 this.logGateway.errorDisconnect(taskId);
             });
-        
             
-          }
+        }
 }

@@ -16,7 +16,7 @@ async function bootstrap() {
 
   // 提供下載的檔案靜態服務
   app.use('/downloads', express.static(path.join(__dirname, '..', 'downloads')));
-  app.useGlobalPipes(new ValidationPipe()); // 這行非常重要
+  app.useGlobalPipes(new ValidationPipe({ transform: true })); // 這行非常重要
 
   await app.listen(process.env.PORT ?? 3000, '0.0.0.0');
 }

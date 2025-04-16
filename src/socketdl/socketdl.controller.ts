@@ -9,9 +9,9 @@ export class SocketdlController {
     @Post()
     async startDownload(@Body() body: SocketdlBodyDto) {
         const { url, format } = body;
-      const taskId = url; // 使用 URL 作為簡單的 taskId，也可以考慮使用 UUID
-      this.socketdlService.runYtDlp(taskId, url, format);
-      return { status: 'started', url, taskId, format};
-    }
+        const taskId = url; // 使用 URL 作為簡單的 taskId，也可以考慮使用 UUID
+        this.socketdlService.runYtDlp(taskId, url, format);
+        return { status: 'started', url, taskId, format};
+      }
 
 }

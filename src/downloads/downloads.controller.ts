@@ -1,8 +1,9 @@
-import { Controller, Post, Query, Res, HttpException, HttpStatus, Body } from '@nestjs/common';
+import { Controller, Post, Query, Res, HttpException, HttpStatus, Body, Get } from '@nestjs/common';
 import { DownloadsService } from './downloads.service';
 import { Response } from 'express';
 import * as path from 'path';
-import { DownloadBodyDto } from './download.dto';
+import { DownloadBodyDto, DownloadQueryDto } from './download.dto';
+import { createReadStream, existsSync } from 'fs';
 
 @Controller('downloads')
 export class DownloadsController {
@@ -34,6 +35,28 @@ export class DownloadsController {
             downloadUrl: downloadUrl,
             fullUrl: `http://34.66.222.199:3000${downloadUrl}`, // 或你的 domain
         };
+        } catch (error) {
+            throw new HttpException(`下載失敗: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    // 直接下載影片
+    @Get('directID')
+    async downloadDirectByID(@Query() parms: DownloadQueryDto, @Res() res: Response) {
+        const { id } = parms;
+        const fileName = `${id}.${'mp4'}`;
+        const outputPath = path.join(__dirname, '..', '..', 'downloads', fileName);
+        console.log(`outputPath ${outputPath}`)
+        try {
+            if (!existsSync(outputPath)) {
+                return res.status(404).json({ message: 'File not found' });
+              }
+          
+              res.setHeader('Content-Disposition', `attachment; filename="${fileName}"`);
+              res.setHeader('Content-Type', 'application/octet-stream');
+          
+              const fileStream = createReadStream(outputPath);
+              fileStream.pipe(res);
         } catch (error) {
             throw new HttpException(`下載失敗: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
         }
