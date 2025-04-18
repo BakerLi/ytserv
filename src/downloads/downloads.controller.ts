@@ -33,7 +33,7 @@ export class DownloadsController {
         return {
             message: '下載完成',
             downloadUrl: downloadUrl,
-            fullUrl: `http://34.66.222.199:3000${downloadUrl}`, // 或你的 domain
+            fullUrl: `https://thxjupiter.ddns.net${downloadUrl}`, // 或你的 domain
         };
         } catch (error) {
             throw new HttpException(`下載失敗: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);

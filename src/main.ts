@@ -9,7 +9,7 @@ async function bootstrap() {
 
   // 自訂 CORS 設置
   app.enableCors({
-    origin: 'http://localhost:5173',  // 只允許來自這個 URL 的請求
+    origin: 'https://thxjupiter.ddns.net/',  // 只允許來自這個 URL 的請求
     methods: 'GET,POST',              // 只允許這些 HTTP 方法
     allowedHeaders: 'Content-Type',   // 只允許這個 header
   });
